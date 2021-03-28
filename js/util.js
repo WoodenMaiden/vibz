@@ -1,4 +1,4 @@
 /**
  * @author Yann POMIE
- * @file main.js
+ * @file util.js
  */

@@ -7,7 +7,9 @@
 (function () {
     "use strict";
 
-    const BASE = "http://localhost:63342/vibz/"
+
+    //CONSTANTES
+    const BASE = "http://vibz.alwaysdata.net/"
     const STYLE_MAIN = {
         "background": "#00b169"
     }
@@ -15,6 +17,8 @@
         "border" : "solid 2px black",
         "border-radius": "30px"
     }
+    const SIGNUP = ""
+
 
     /**
      * @description fonction permettant de charger une vue à partir d'un fichier
@@ -23,7 +27,7 @@
      */
     let changeView = (file) => {
         $.ajax( {
-            url : BASE + "/view/" + file + ".html",
+            url : BASE + "view/" + file + ".html",
             method : "get",
             dataType : "html"
         })
@@ -51,7 +55,7 @@
     }
     $( () => {
         changeView("signup");
-
+        console.log("jquery et js fonctionnent :D");
     })
 
 }) ();

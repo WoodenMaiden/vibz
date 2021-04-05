@@ -94,21 +94,9 @@ let signup = () => {
                 }
             }
         })
-        /*.done(function (data) {
-            //on vérifie le résultat
-            if (data.hasOwnProperty("result")){
-                if (data.result){
-                    $msg.html("réussi !");
-                    //window.location.reload(true)
-                }
-                else {
-
-                }
-            }
-        })*/
         return false; // pour empêcher le refresh de la page
     })
-    // changeView("feed")
+    changeView("feed")
 }
 
 

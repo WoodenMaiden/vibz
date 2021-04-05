@@ -1,11 +1,12 @@
 <?php
 
 //enum
-abstract class Constants
+class Constants
 {
-    const DATABASE_NAME = 'vibz_mysql';
-    const DATABASE_HOST = 'mysql-vibz.alwaysdata.net';
-    const DATABASE_USER = 'vibz';
-    const DATABASE_PASSWORD = 'D!08rand0';
-    const DATABASE_DSN = 'mysql:dbname=' . self::DATABASE_NAME . ';host=' . self::DATABASE_HOST;
+    public const DATABASE_NAME = 'vibz_mysql';
+    public const DATABASE_HOST = 'mysql-vibz.alwaysdata.net';
+    public const DATABASE_USER = 'vibz';
+    public const DATABASE_PASSWORD = 'D!08rand0';
+    public const DATABASE_DSN = 'mysql:host=' . self::DATABASE_HOST . ';dbname=' . self::DATABASE_NAME . ';charset=utf8';
+
 }

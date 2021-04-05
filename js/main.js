@@ -19,25 +19,6 @@
     }
     const SIGNUP = ""
 
-
-    /**
-     * @description fonction permettant de charger une vue à partir d'un fichier
-     *
-     * @param content : chemin vers la vue a charger (.html)
-     */
-    let changeView = (file) => {
-        $.ajax( {
-            url : BASE + "view/" + file + ".html",
-            method : "get",
-            dataType : "html"
-        })
-        .done(function (data) {
-            $("#main").html(data);
-            if(file == "feed.html") getPosts(10)
-        })
-    }
-
-
     /**
      * @description lance une requête ajax pour charger et afficher les n derniers messages
      *

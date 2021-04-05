@@ -1,26 +1,34 @@
 <?php
-require "queries.php";
+//require 'queries.php';
+require 'Database.php';
 
 $obj = new stdClass();
 $obj->result = true;
+$obj->trace = var_export($_POST, true);
+$obj->message = '[' . date("F j, Y, g:i a") . ']';
 
-function signup($obj) {
-    $credentials = json_decode(file_get_contents('php://input'), true);
-//    print_r($credentials);
-//    error_log($credentials . '\n', 3,'log');
-    if (InsertUser($credentials['pseudo'], $credentials['email'], $credentials['mot_de_passe']) == false){
-        $obj->result = false;
-//        $obj->message = "";
+$db = new Database();
+if (!$db->error) {
+
+    if (isset($_POST['pseudo']) && isset($_POST['email']) && isset($_POST['mot_de_passe'])) {
+
+        if ($db->insertUser($_POST['pseudo'], $_POST['email'], $_POST['mot_de_passe']) == false){
+            $obj->result = false;
+            $obj->message = $obj->message . "Une erreur à eu lieu insertUser()";
+        }
     }
-    return $obj;
-}
+    else {
+        $obj->result = false;
+    }
 
-$obj = signup($obj);
+} else {
+    $obj->result = false;
+    $obj->message = $obj->message . ". Database error: " . $db->error;
+}
 
 
 
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
-
 echo json_encode($obj);

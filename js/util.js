@@ -3,6 +3,8 @@
  * @file util.js
  */
 
+const BASE = "http://vibz.alwaysdata.net/"
+
 /**
  * @description fonction permettant de charger une vue à partir d'un fichier
  *
@@ -10,7 +12,7 @@
  */
 
 let changeView = (file) => {
-    const BASE = "http://vibz.alwaysdata.net/"
+
     $.ajax({
         url : BASE + "view/" + file + ".html",
         method : "get",
@@ -25,3 +27,6 @@ let changeView = (file) => {
         changeView("feed");
     })
 }
+
+
+export {changeView}

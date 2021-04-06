@@ -43,7 +43,29 @@ class Database
             'e' => $email,
             'p' => $passwd
         ]);
+    }
 
+    private function emailExists ($email){
+        $query = $this->connection->prepare('SELECT * FROM USER WHERE email = :e');
+        return $query->execute([$email]);
+    }
+
+
+    /**
+     * @param $email
+     * @param $passwd non haché
+     * @return false|mixed  la ligne si ça réussit, false sinon
+     */
+    public function login ($email, $passwd){
+        $passwd = password_hash($passwd, PASSWORD_BCRYPT);
+        if ($this->emailExists($email)) {
+            $query = $this->connection->prepare('SELECT * FROM USER WHERE email = :e');
+            $query->execute([$email]);
+            $row = $query->fetch();
+            if (password_verify($passwd, $row->email))return $row;
+            else return false;
+        }
+        else return false;
     }
 
 }

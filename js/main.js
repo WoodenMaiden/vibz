@@ -4,6 +4,8 @@
  */
 
 
+import {changeView} from './util.js'
+
 (function () {
     "use strict";
 

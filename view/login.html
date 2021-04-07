@@ -1,22 +1,15 @@
-<!doctype html>
-    <html>
-    <head>
-        <title>Connectez vous</title>
-    </head>
-    <body>
-        <div>
-            <form id="login">
-                <h1>Email</h1>
-                <input type="email" name="email" id="email">
-                <h2>Mot de passe</h2>
-                <input type="password" name="mot_de_passe" id="mot_de_passe">
+<div>
+    <h1>Se connecter</h1>
+    <form id="login" method="post">
+        <h2>Email</h2>
+        <input type="email" name="log_email" id="log_email">
+        <h2>Mot de passe</h2>
+        <input type="password" name="log_mot_de_passe" id="log_mot_de_passe">
 
-                <input type="submit" onclick="login()" value="Connexion">
-            </form>
+        <input type="submit" onclick="login()" value="Connexion">
+    </form>
 
-            <button onclick="changeView('signup.html')">Pas de compte ? créez en un dès maintenant!</button>
+    <button onclick="changeView('signup')">Pas de compte ? créez en un dès maintenant!</button>
 
-            <p id="msg"></p>
-        </div>
-    </body>
-</html>
+    <p id="msg"></p>
+</div>

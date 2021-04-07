@@ -29,7 +29,7 @@ class Database
         }
     }
 
-    public function getConnection()
+    private function getConnection()
     {
         return $this->connection;
     }
@@ -46,26 +46,32 @@ class Database
     }
 
     private function emailExists ($email){
-        $query = $this->connection->prepare('SELECT * FROM USER WHERE email = :e');
-        return $query->execute([$email]);
+        $query = $this->connection->prepare('SELECT * FROM USER WHERE email = ?');
+        $bool = $query->execute([$email]);
+        $row = $query->fetch();
+        return $bool && ($row->id != null);
     }
 
 
     /**
      * @param $email
-     * @param $passwd non haché
-     * @return false|mixed  la ligne si ça réussit, false sinon
+     * @param $passwd : non hashé
+     * @return false|mixed : la ligne si ça réussit, false sinon
      */
-    public function login ($email, $passwd){
-        $passwd = password_hash($passwd, PASSWORD_BCRYPT);
+    public function login ($email){
         if ($this->emailExists($email)) {
-            $query = $this->connection->prepare('SELECT * FROM USER WHERE email = :e');
+            $query = $this->connection->prepare('SELECT * FROM USER WHERE email = ?');
             $query->execute([$email]);
             $row = $query->fetch();
-            if (password_verify($passwd, $row->email))return $row;
-            else return false;
+            return array(
+                'id' => $row->id,
+                'email' => $row->email,
+                'name' => $row->nom,
+                'date' => $row->date,
+                'status' => $row->status,
+                'password' => $row->password
+            );
         }
         else return false;
     }
-
 }

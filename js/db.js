@@ -15,7 +15,7 @@ const CSS_ERROR = {
 
 /**
  * @description inscrit un utilisateur
- * @return rien, si il y a une erreru un message est affiché sinon on va sur le feed
+ * @return rien, si il y a une erreur un message est affiché sinon on va sur le feed
  */
 
 let signup = () => {
@@ -26,7 +26,7 @@ let signup = () => {
 
     $form.submit(function (event) {
 
-        var $dataArray = $form.serializeArray();
+        let $dataArray = $form.serializeArray();
 
         //on vérifie la validité des données :
         //TODO afficher les erreurs dans une notif
@@ -76,7 +76,7 @@ let signup = () => {
         //on vérifie les mots de passe
         if ($dataArray[3]['value'] === $dataArray[4]['value']){
             //sont ils pas trop longs ?
-            if ($dataArray[3]['value'].length > 72 || $dataArray[3]['value'].length === 0){
+            if ($dataArray[3]['value'].length > 60 || $dataArray[3]['value'].length === 0){
                 $msg.html("la longueur du mot de passe est de plus de 72 caractères ou nulle!").css(CSS_ERROR)
                 return false;
             }
@@ -91,7 +91,7 @@ let signup = () => {
             url: SIGNUP,
             method: "POST",
             data: $(this).serialize(),
-            dataType: "json",
+            dataType: "json"
 
         }).done(function (data) {
             if (data.hasOwnProperty("result")) {
@@ -109,7 +109,7 @@ let signup = () => {
         // $msg.fadeOut(5000);
         return false; // pour empêcher le refresh de la page
     })
-    if (success) changeView("feed");
+    // if (success) changeView("feed");
 }
 
 
@@ -117,9 +117,6 @@ let signup = () => {
  *  @description  connecte un utilisateur à la bd
  *  @return rien, si il y a une erreur un message est affiché sinon on va sur le feed
  */
-
-
-//TODO server side
 
 let login = () => {
     let $form = $("#login");
@@ -131,7 +128,7 @@ let login = () => {
         let $dataArray = $form.serializeArray();
         // on vérifie si rien n'est vide ou hors valeurs
         if ($dataArray[0]['value'].length > 254  || $dataArray[0]['value'].length === 0){
-            $msg.html("la longueur du pseudo est de plus de 30 caractères ou nulle!").css(CSS_ERROR);
+            $msg.html("la longueur du mail est de plus de 30 caractères ou nulle!").css(CSS_ERROR);
             return false;
         }
 
@@ -141,31 +138,40 @@ let login = () => {
             return false;
         }
 
-        if ($dataArray[1]['value'].length > 72 || $dataArray[1]['value'].length === 0) {
+        if ($dataArray[1]['value'].length > 60 || $dataArray[1]['value'].length === 0) {
             $msg.html("la longueur du mot de passe est de plus de 72 caractères ou nulle!").css(CSS_ERROR)
             return false;
         }
+        console.log($dataArray);
+
 
         $.ajax({
             url : LOGIN,
             method: "POST",
             data: $(this).serialize(),
-            dataType: "json",
+            dataType: "json"
 
         })
         .done(function (data) {
-            if (data.hasOwnProperty("result") && data.hasOwnProperty("")) {
-                if (data.result) {
-                    window.location.refresh(true)
+            console.log("requete envoyée!");
+            if (data.hasOwnProperty("result") && data.hasOwnProperty("message")) {
+                if (data.result == true) {
+                    window.location.refresh(true);
+                    console.log("connextion réussie");
                 } else {
-                    success = data.result
-
+                    success = data.result;
+                    console.log("connextion echouée");
+                    console.log(data);
                 }
             }
+
+        })
+        .fail( function () {
+            console.log("erreur");
         })
         return false;
     })
-    if (success) changeView("feed");
+    // if (success) changeView("feed");
 }
 
 

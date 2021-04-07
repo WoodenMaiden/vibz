@@ -22,7 +22,7 @@ let changeView = (file) => {
         $("#main").html(data);
         // if(file === "feed") getPosts(10)
     })
-    .error(function () {
+    .fail(function () {
         console.log("Erreur lors de l'accès de " + BASE + "view/" + file + ".html");
         changeView("feed");
     })

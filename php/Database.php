@@ -55,7 +55,6 @@ class Database
 
     /**
      * @param $email
-     * @param $passwd : non hashé
      * @return false|mixed : la ligne si ça réussit, false sinon
      */
     public function login ($email){
@@ -73,5 +72,83 @@ class Database
             );
         }
         else return false;
+    }
+
+    /**
+     * @return array : array de lignes
+     */
+    public function getLatest (){
+        $query = $this->connection->prepare('SELECT * FROM POST ');
+        $query->execute();
+        return $query->fetchAll();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getUserById($id){
+        $query = $this->connection->prepare('SELECT * FROM USER WHERE id = ?');
+        $query->execute([$id]);
+        return $query->fetch();
+    }
+
+    /**
+     * @param $post integer
+     * @return bool
+     */
+    public function like($post){
+        $query = $this->connection->prepare('UPDATE POST SET likes = likes + 1 WHERE id_post = ?');
+        return $query->execute([$post]);
+    }
+
+    /**
+     * @param $post integer
+     * @return bool
+     */
+    public function unlike($post){
+        $query = $this->connection->prepare('UPDATE POST SET likes = likes - 1 WHERE id_post = ?');
+        return $query->execute([$post]);
+    }
+
+    /**
+     * @param $msg
+     * @param $id
+     * @return bool
+     */
+    public function write ($msg, $id){
+        $query = $this->connection->prepare('INSERT INTO POST (date, content, id_user, likes) VALUES (NOW(), :c, :i, 0)');
+        return $query->execute([
+           'c' => $msg,
+           'i' => $id
+        ]);
+    }
+
+    /**
+     * @param $postid
+     * @return mixed
+     */
+
+    public function getUserFromPost ($postid){
+        $query = $this->connection->prepare('SELECT * FROM USER WHERE id IN 
+                                                    (SELECT id_user FROM POST WHERE id_post = ?)');
+        $query->execute([$postid]);
+        return $query->fetch();
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getUserFromId ($id){
+        $query = $this->connection->prepare('SELECT * FROM USER WHERE id = ?');
+        $query->execute([$id]);
+        return $query->fetch();
+    }
+
+    public function getPostsById ($id) {
+        $query = $this->connection->prepare('SELECT * FROM POST WHERE id_user = ?');
+        $query->execute([$id]);
+        return $query->fetchAll();
     }
 }

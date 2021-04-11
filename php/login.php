@@ -8,7 +8,6 @@ $obj->result = true;
 $obj->trace = var_export($_POST, true);
 $obj->message = '[' . date("F j, Y, g:i a") . '] post :' . $_POST['log_email'] . ' ' . $_POST['log_mot_de_passe'] .' // ';
 
-//echo $obj->trace;
 
 $db = new Database();
 if (!$db->error) {
@@ -22,8 +21,6 @@ if (!$db->error) {
             $_SESSION['status'] = $row['status'];
 
             $hash = $row['password'];
-
-            $obj->message = $obj->message . var_export($row, true);
 
             if ($hash == null){
                 $obj->message = $obj->message . ' Erreur lors de la requete sql ' . var_export($row, true);
@@ -49,17 +46,9 @@ else {
     $obj->message = $obj->message . ' Database error : ' . $db->error;
 }
 
-/*
-echo 'test' . PHP_EOL;
-$passwd = 'test';
-var_dump($arr = $db->login('test.test@test.com'));
-
-echo 'mdp valide : ' . password_verify($passwd, $arr['password']);
-*/
 
 
 header('Cache-Control: no-cache, must-revalidate');
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
 header('Content-type: application/json');
-
 echo json_encode($obj);

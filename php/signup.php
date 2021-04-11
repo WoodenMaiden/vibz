@@ -5,7 +5,7 @@ require 'Database.php';
 $obj = new stdClass();
 $obj->result = true;
 $obj->trace = var_export($_POST, true);
-$obj->message = '[' . date("F j, Y, g:i a") . ']';
+$obj->message = '[' . date("F j, Y, g:i a") . '] : ';
 
 $db = new Database();
 if (!$db->error) {
@@ -19,6 +19,7 @@ if (!$db->error) {
     }
     else {
         $obj->result = false;
+        $obj->message .= 'Erreur avec POST';
     }
 
 } else {

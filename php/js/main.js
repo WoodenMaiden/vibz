@@ -94,10 +94,6 @@
         "font-size" : "500px"
     }
 
-    const CSS_LOGO ={
-        "font-family" : "Helvetica"
-    }
-
     /////////
     //Posts//
     /////////
@@ -117,57 +113,6 @@
             .done(function (data) {result = data})
         return result;
     }
-
-
-
-    /**
-     * @description va chercher les n derniers posts
-     * @param n
-     * @return une requete ajax qui retourne les posts dans un json
-     */
-
-    let getPosts = (n) => {
-        return $.ajax({
-            url : GET_LATEST,
-            method : "POST",
-            data : "n="+n,
-            dataType : "json"
-        })
-            .done(function (data){
-                //TODO
-                console.log(data);
-                return data;
-            })
-            .fail(function () {
-                console.log("une erreur est survenue getposts")
-                $("#msg").append("Une erreur est survenue lors du chargement des posts, contactez un administrateur").css(CSS_ERROR);
-            })
-    }
-
-    /**
-     * @description va chercher les posts d'un utilisateur
-     * @param i identifiant d'utilisateur
-     * @return {*|Q.Promise<void>} une requete ajax qui retourne les posts dans un json
-     */
-
-    let getPostsByID = (i) => {
-        return $.ajax({
-            url : GET_POSTS_BY_ID,
-            method : "POST",
-            data : "id="+i,
-            dataType : "json"
-        })
-            .done(function (data){
-                //TODO
-                console.log(data);
-                return data;
-            })
-            .fail(function () {
-                console.log("une erreur est survenue getposts")
-                $("#msg").append("Une erreur est survenue lors du chargement des posts, contactez un administrateur").css(CSS_ERROR);
-            })
-    }
-
 
 
     /**
@@ -240,6 +185,7 @@
             })
             .done(function (dt) {
                 if (dt.hasOwnProperty("data")){
+
                     console.log("gotoProfile()");
                     console.log(dt.data.nom);
 
@@ -253,8 +199,9 @@
                         }
 
                         $usr.css(CSS_PFP);
-                        $name.text(dt.data.nom);
-                        $.when(getPostsByID(dt.data.id)).done(function (json) {
+                        $name.html(dt.data.nom);
+
+                        $.when(getPostsById(dt.data.id)).done(function (json) {
                             appendPosts(json);
                         });
                     })
@@ -264,6 +211,49 @@
                 console.log("erreur");
             })
         }
+    }
+
+
+    /**
+     * @description va chercher les n derniers posts
+     * @param n
+     * @return une requete ajax qui retourne les posts dans un json
+     */
+
+    let getPosts = (n) => {
+        return $.ajax({
+            url : GET_LATEST,
+            method : "POST",
+            data : "n="+n,
+            dataType : "json"
+        })
+        .done(function (data){
+            //TODO
+            console.log(data);
+            return data;
+        })
+        .fail(function () {
+            console.log("une erreur est survenue getposts")
+            $("#msg").append("Une erreur est survenue lors du chargement des posts, contactez un administrateur").css(CSS_ERROR);
+        })
+    }
+
+    let getPostsByID = (i) => {
+        return $.ajax({
+            url : GET_POSTS_BY_ID,
+            method : "POST",
+            data : "id="+i,
+            dataType : "json"
+        })
+            .done(function (data){
+                //TODO
+                console.log(data);
+                return data;
+            })
+            .fail(function () {
+                console.log("une erreur est survenue getposts")
+                $("#msg").append("Une erreur est survenue lors du chargement des posts, contactez un administrateur").css(CSS_ERROR);
+            })
     }
 
     /**
@@ -665,8 +655,6 @@
     //$(document).ready()
     $( () => {
 
-        $("#logo").css(CSS_LOGO);
-
         $("#navbar").css(CSS_NAVBAR);
         $(".material-icons").css(CSS_ICONS);
         $(document.body).css(CSS_STYLE_BODY)
@@ -704,3 +692,4 @@
     })
 
 }) ();
+
